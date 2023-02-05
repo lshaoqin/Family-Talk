@@ -11,7 +11,7 @@ logging.basicConfig(
 #Set prompt to send daily when /start command is issued
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id #get current chat's id
-    send_time = datetime.time(hour=3, minute=25, second=40) #Time to send prompt. Currently 8pm SGT
+    send_time = datetime.time(hour=12, minute=00, second=00) #Time to send prompt. Currently 8pm SGT
     await context.bot.send_message(chat_id=chat_id, text="You will now receive daily prompts!")
     context.job_queue.run_daily(send_prompt, time=send_time, chat_id=chat_id)
 
