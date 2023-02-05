@@ -8,18 +8,26 @@ logging.basicConfig(
     level=logging.INFO
 )
 
+#Set prompt to send daily when /start command is issued
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    chat = update.effective_chat
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="You will now receive daily prompts!")
-    context.job_queue.run_daily(send_prompt, time=datetime.time(hour=12, minute=00, second=00), chat_id=chat.id)
+    chat_id = update.effective_chat.id #get current chat's id
+    send_time = datetime.time(hour=3, minute=25, second=40) #Time to send prompt. Currently 8pm SGT
+    await context.bot.send_message(chat_id=chat_id, text="You will now receive daily prompts!")
+    context.job_queue.run_daily(send_prompt, time=send_time, chat_id=chat_id)
 
+#Message displayed when user sends an unrecognised command to the bot
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text="Please use /config to change your settings!")
 
+#Sends content to the chat
 async def send_prompt(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
-    print(job.chat_id)
-    await context.bot.send_message(job.chat_id, text="How is everyone doing?")
+    await context.bot.send_message(job.chat_id, text="How is everyone doing?") #Send message
+    await context.bot.send_poll(chat_id=job.chat_id, 
+        question="How are you feeling now?", 
+        options=["Terrible :(", "Not great", "I'm fine", "Pretty good!", "Feeling great!"],
+        is_anonymous=False,
+        allows_multiple_answers=False) #Send poll
 
 
 if __name__ == '__main__':
