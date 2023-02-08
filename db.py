@@ -1,8 +1,12 @@
 import firebase_admin
 from firebase_admin import credentials, db
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 cred = credentials.Certificate("./serviceAccountKey.json")
-firebase_admin.initialize_app(cred, {'databaseURL':"https://family-talk-58a95-default-rtdb.asia-southeast1.firebasedatabase.app/"})
+firebase_admin.initialize_app(cred, {'databaseURL':os.getenv('DB_URL')})
 
 #initialise database - only run once
 def init():
