@@ -1,7 +1,10 @@
 import logging
-from telegram import Update
+import random
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Update
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTypes, CommandHandler
 import datetime
+from prompts import *
+from db import push
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -10,10 +13,23 @@ logging.basicConfig(
 
 #Set prompt to send daily when /start command is issued
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    '''
+    text = "Hello! How many prompts would you like me to send per week?"
+    buttons = [
+        [
+            InlineKeyboardButton()
+        ]
+    ]
+    '''
     chat_id = update.effective_chat.id #get current chat's id
     send_time = datetime.time(hour=12, minute=00, second=00) #Time to send prompt. Currently 8pm SGT
-    await context.bot.send_message(chat_id=chat_id, text="You will now receive daily prompts!")
-    context.job_queue.run_daily(send_prompt, time=send_time, chat_id=chat_id)
+    push(chat_id, 3, 2)
+    current_jobs = context.job_queue.get_jobs_by_name(str(chat_id))
+    for job in current_jobs:
+        job.schedule_removal()
+    context.job_queue.run_daily(send_sharing, time=send_time, days=(1,), chat_id=chat_id, data = 2, name=str(chat_id))
+    context.job_queue.run_daily(send_activity, time=send_time, days=(5,), chat_id=chat_id, data = 2, name=str(chat_id))
+    await context.bot.send_message(chat_id=chat_id, text="You will now receive prompts periodically!")
 
 #Message displayed when user sends an unrecognised command to the bot
 async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -29,6 +45,25 @@ async def send_prompt(context: ContextTypes.DEFAULT_TYPE):
         is_anonymous=False,
         allows_multiple_answers=False) #Send poll
 
+async def send_activity(context: ContextTypes.DEFAULT_TYPE):
+    job = context.job
+    difficulty = job.data
+    if(difficulty == 1):
+        msg = random.choice(activitiesL1)
+    elif(difficulty == 2):
+        msg = random.choice(activitiesL2)
+    else:
+        msg = random.choice(activitiesL3)
+    await context.bot.send_message(job.chat_id, text = "It's almost the weekends! Here's a challenge activity for you: \n\n*" + msg + "*", parse_mode='Markdown')
+    
+async def send_sharing(context: ContextTypes.DEFAULT_TYPE):
+    job = context.job
+    difficulty = job.data
+    if(difficulty == 1):
+        msg = random.choice(sharingL1)
+    elif(difficulty == 2 or difficulty == 3):
+        msg = random.choice(sharingL2)
+    await context.bot.send_message(job.chat_id, text = "It's the start of a new week! Let's share something with everyone else: \n\n*" + msg + "*", parse_mode='Markdown')
 
 if __name__ == '__main__':
     application = ApplicationBuilder().token('6177789852:AAH8rbGi-RIMtnWWrypoglE6ffZxPsd08yY').build()
