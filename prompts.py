@@ -10,3 +10,18 @@ sharingL1 = ["What is something that you're looking forward to this week?", "Wha
 sharingL2 = ["List 3 things that you've been grateful for recently.", "What was something new that you tried recently?", "What are you currently passionate about?",
 "What is a challenge that you're facing lately?", "Share a source of stress for you right now.", "Are you looking forward to your week?"]
 
+pollL1 = [["How are you feeling today?",
+        ["Terrible :(", "Not great", "I'm fine", "Pretty good!", "Feeling great!"]
+        ],
+        ["How was work/school today?",
+        ["It was great!", "Pretty good!", "It was ok", "Not the best", "Awful :("]
+        ],
+        ["Rate your day from 1-5!",
+        ["1", "2", "3", "4", "5"]
+        ],
+        ["Are you happy about the amount of sleep you've been getting?",
+        ["More than enough!", "Happy!", "Pretty decent", "Wish I got more sleep", "I reaaaally need more sleep!"]
+        ]]
+pollL2 = [[
+
+]]

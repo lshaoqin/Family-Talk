@@ -28,6 +28,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for job in current_jobs:
         job.schedule_removal()
     context.job_queue.run_daily(send_sharing, time=send_time, days=(1,), chat_id=chat_id, data = 2, name=str(chat_id))
+    context.job_queue.run_daily(send_poll, time=send_time, days=(3,), chat_id=chat_id, data = 2, name=str(chat_id))
     context.job_queue.run_daily(send_activity, time=send_time, days=(5,), chat_id=chat_id, data = 2, name=str(chat_id))
     await context.bot.send_message(chat_id=chat_id, text="You will now receive prompts periodically!")
 
@@ -65,6 +66,15 @@ async def send_sharing(context: ContextTypes.DEFAULT_TYPE):
         msg = random.choice(sharingL2)
     await context.bot.send_message(job.chat_id, text = "It's the start of a new week! Let's share something with everyone else: \n\n*" + msg + "*", parse_mode='Markdown')
 
+async def send_poll(context: ContextTypes.DEFAULT_TYPE):
+    job = context.job
+    difficulty = job.data
+    msg = random.choice(pollL1)
+    await context.bot.send_poll(chat_id=job.chat_id, 
+        question=msg[0], 
+        options=msg[1],
+        is_anonymous=False,
+        allows_multiple_answers=False)
 if __name__ == '__main__':
     application = ApplicationBuilder().token('6177789852:AAH8rbGi-RIMtnWWrypoglE6ffZxPsd08yY').build()
     
