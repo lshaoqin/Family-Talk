@@ -76,7 +76,7 @@ async def send_poll(context: ContextTypes.DEFAULT_TYPE):
         is_anonymous=False,
         allows_multiple_answers=False)
 if __name__ == '__main__':
-    application = ApplicationBuilder().token('6177789852:AAH8rbGi-RIMtnWWrypoglE6ffZxPsd08yY').build()
+    application = ApplicationBuilder().token(os.getenv('TELEGRAM_TOKEN')).build()
     
     start_handler = CommandHandler('start', start)
     help_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), help)
