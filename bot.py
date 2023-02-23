@@ -5,6 +5,8 @@ from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTyp
 import datetime
 from prompts import *
 from db import push
+import os
+from cards import cards
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -75,13 +77,22 @@ async def send_poll(context: ContextTypes.DEFAULT_TYPE):
         options=msg[1],
         is_anonymous=False,
         allows_multiple_answers=False)
+
+async def send_card(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    chat_id = update.effective_chat.id #get current chat's id
+    card = random.choice(cards)
+    await context.bot.send_photo(chat_id=chat_id, photo=open(card, 'rb'),
+    caption="Credits: Check out [TableTalk by Vessels](https://tabletalkbyvessels.com/)!", parse_mode='Markdown')
+
 if __name__ == '__main__':
     application = ApplicationBuilder().token(os.getenv('TELEGRAM_TOKEN')).build()
     
     start_handler = CommandHandler('start', start)
+    card_handler = CommandHandler('card', send_card)
     help_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), help)
 
     application.add_handler(start_handler)
     application.add_handler(help_handler)
+    application.add_handler(card_handler)
     
     application.run_polling()

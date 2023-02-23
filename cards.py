@@ -1,0 +1,2 @@
+cards = ["cards/IMG_3167.JPG","cards/IMG_3168.JPG", "cards/IMG_3169.JPG", "cards/IMG_3170.JPG", "cards/IMG_3171.JPG", 
+"cards/IMG_3172.JPG", "cards/IMG_3173.JPG", "cards/IMG_3174.JPG", "cards/IMG_3175.JPG", "cards/IMG_3176.JPG"]
