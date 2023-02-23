@@ -1,6 +1,3 @@
-cards = ["cards/IMG_3167.JPG","cards/IMG_3168.JPG", "cards/IMG_3169.JPG", "cards/IMG_3170.JPG", "cards/IMG_3171.JPG", 
-"cards/IMG_3172.JPG", "cards/IMG_3173.JPG", "cards/IMG_3174.JPG", "cards/IMG_3175.JPG", "cards/IMG_3176.JPG"]
-
 card_ids = ["AgACAgUAAxkBAAEdlc1j93gou_V3Z4ZPpX2SU3FxlOmamgACibsxG5llwFf35lCd4svkgwEAAwIAA3gAAy4E", 
 "AgACAgUAAxkBAAEdlc5j93gor-e4tO_xXl9ZVs5YfzQJZgACk7sxG5llwFeJOyIif4aaZAEAAwIAA3gAAy4E",
 "AgACAgUAAxkBAAEdlc9j93goG2O0emT3rTogyivLRpVFugACZLUxG0fPuVeHqWph68aGzAEAAwIAA3gAAy4E",
