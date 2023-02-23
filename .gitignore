@@ -3,4 +3,3 @@ serviceAccountKey.json
 .env
 __pycache__
 __pycache__/db.cpython-310.pyc
-cards
