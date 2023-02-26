@@ -45,4 +45,7 @@ def delete(id):
         if(value["id"] == id):
             ref.child(key).set({})
 
-push(2,2,3)
+def get_schedules():
+    ref = db.reference("/Schedules")
+    schedules = ref.get()
+    return schedules
