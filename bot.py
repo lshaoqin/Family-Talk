@@ -93,7 +93,7 @@ async def send_poll(context: ContextTypes.DEFAULT_TYPE):
 
 async def send_card(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id #get current chat's id
-    card = random.choice(cards)
+    card = random.choice(card_ids)
     await context.bot.send_photo(chat_id=chat_id, photo=card,
     caption="Credits: Check out [TableTalk by Vessels](https://tabletalkbyvessels.com/)!", parse_mode='Markdown')
 
