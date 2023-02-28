@@ -47,19 +47,6 @@ async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await context.bot.send_message(chat_id=chat_id, text="I am not active at the moment - use /start to activate me!")
 
-#Message displayed when user sends an unrecognised command to the bot
-async def help(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="Hello, I'm Frank :)")
-
-#Sends content to the chat
-async def send_prompt(context: ContextTypes.DEFAULT_TYPE):
-    job = context.job
-    await context.bot.send_message(job.chat_id, text="How is everyone doing?") #Send message
-    await context.bot.send_poll(chat_id=job.chat_id, 
-        question="How are you feeling now?", 
-        options=["Terrible :(", "Not great", "I'm fine", "Pretty good!", "Feeling great!"],
-        is_anonymous=False,
-        allows_multiple_answers=False) #Send poll
 
 async def send_activity(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
@@ -97,26 +84,6 @@ async def send_card(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_photo(chat_id=chat_id, photo=card,
     caption="Credits: Check out [TableTalk by Vessels](https://tabletalkbyvessels.com/)!", parse_mode='Markdown')
 
-async def repopulate(schedule, context: ContextTypes.DEFAULT_TYPE):
-    '''
-    text = "Hello! How many prompts would you like me to send per week?"
-    buttons = [
-        [
-            InlineKeyboardButton()
-        ]
-    ]
-    '''
-    print(schedule)
-    chat_id = schedule["id"]
-    send_time = datetime.time(hour=12, minute=00, second=00) #Time to send prompt. Currently 8pm SGT
-    current_jobs = context.job_queue.get_jobs_by_name(str(chat_id))
-    for job in current_jobs:
-        job.schedule_removal()
-    context.job_queue.run_daily(send_sharing, time=send_time, days=(1,), chat_id=chat_id, data = schedule["level"], name=str(chat_id))
-    context.job_queue.run_daily(send_poll, time=send_time, days=(3,), chat_id=chat_id, data = schedule["level"], name=str(chat_id))
-    context.job_queue.run_daily(send_activity, time=send_time, days=(5,), chat_id=chat_id, data = schedule["level"], name=str(chat_id))
-
-
 async def restore_queue(update: Update, context: ContextTypes.DEFAULT_TYPE):
     schedules = get_schedules()
     for key, schedule in schedules.items():
@@ -128,18 +95,18 @@ async def restore_queue(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.job_queue.run_daily(send_sharing, time=send_time, days=(1,), chat_id=chat_id, data = schedule["level"], name=str(chat_id))
         context.job_queue.run_daily(send_poll, time=send_time, days=(3,), chat_id=chat_id, data = schedule["level"], name=str(chat_id))
         context.job_queue.run_daily(send_activity, time=send_time, days=(5,), chat_id=chat_id, data = schedule["level"], name=str(chat_id))
+    chat_id = update.effective_chat.id #get current chat's id
+    await context.bot.send_message(chat_id, text = "Update successful!")
 
 if __name__ == '__main__':
     application = ApplicationBuilder().token(os.getenv('TELEGRAM_TOKEN')).build()
     
-    start_handler = CommandHandler('start', start)
     card_handler = CommandHandler('card', send_card)
+    start_handler = CommandHandler('start', start)
     update_handler = CommandHandler('restore_queue', restore_queue)
     stop_handler = CommandHandler('stop', stop)
-    #help_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), help) - disabled for now
 
     application.add_handler(start_handler)
-    #application.add_handler(help_handler) - disabled for now
     application.add_handler(card_handler)
     application.add_handler(update_handler)
     application.add_handler(stop_handler)
