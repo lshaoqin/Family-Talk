@@ -15,25 +15,17 @@ logging.basicConfig(
 
 #Set prompt to send daily when /start command is issued
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    '''
-    text = "Hello! How many prompts would you like me to send per week?"
-    buttons = [
-        [
-            InlineKeyboardButton()
-        ]
-    ]
-    '''
     chat_id = update.effective_chat.id #get current chat's id
     send_time = datetime.time(hour=12, minute=00, second=00) #Time to send prompt. Currently 8pm SGT
     push(chat_id, 3, 2)
     current_jobs = context.job_queue.get_jobs_by_name(str(chat_id))
     if current_jobs:
-        await context.bot.send_message(chat_id=chat_id, text="I've already been started - look out for notifications every Monday, Wednesday, and Friday!\n\nIf you don't want to receive prompts anymore, please use the /stop command.")
+        await context.bot.send_message(chat_id=chat_id, text="I've already been started - look out for prompts every Monday, Wednesday, and Friday!\n\nIf you want me to take a break, please use the /stop command.")
     else:
         context.job_queue.run_daily(send_sharing, time=send_time, days=(1,), chat_id=chat_id, data = 2, name=str(chat_id))
         context.job_queue.run_daily(send_poll, time=send_time, days=(3,), chat_id=chat_id, data = 2, name=str(chat_id))
         context.job_queue.run_daily(send_activity, time=send_time, days=(5,), chat_id=chat_id, data = 2, name=str(chat_id))
-        await context.bot.send_message(chat_id=chat_id, text="You will now receive prompts periodically!")
+        await context.bot.send_message(chat_id=chat_id, text="Great! See you every Monday, Wednesday, and Friday :)")
 
 #stop the bot from sending prompts
 async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -43,9 +35,9 @@ async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for job in current_jobs:
             job.schedule_removal()
         delete(chat_id)
-        await context.bot.send_message(chat_id=chat_id, text="You will no longer receive prompts from me.")
+        await context.bot.send_message(chat_id=chat_id, text="(Yawn) I'll go take a nap!")
     else:
-        await context.bot.send_message(chat_id=chat_id, text="I am not active at the moment - use /start to activate me!")
+        await context.bot.send_message(chat_id=chat_id, text="I am asleep at the moment - use /start to wake me up!")
 
 
 async def send_activity(context: ContextTypes.DEFAULT_TYPE):
@@ -57,7 +49,7 @@ async def send_activity(context: ContextTypes.DEFAULT_TYPE):
         msg = random.choice(activitiesL2)
     else:
         msg = random.choice(activitiesL3)
-    await context.bot.send_message(job.chat_id, text = "It's almost the weekends! Here's a challenge activity for you: \n\n*" + msg + "*", parse_mode='Markdown')
+    await context.bot.send_message(job.chat_id, text = "HAPPY FRIDAY EVERYONE!!! My family and I are so glad that the weekend is finally here we're having tea tree leaves for breakfast🤤 I hope everyone is doing okay after the long week☺️ Here's what we're planning to do over the weekend! \n\n*" + msg + "*", parse_mode='Markdown')
     
 async def send_sharing(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
@@ -66,12 +58,15 @@ async def send_sharing(context: ContextTypes.DEFAULT_TYPE):
         msg = random.choice(sharingL1)
     elif(difficulty == 2 or difficulty == 3):
         msg = random.choice(sharingL2)
-    await context.bot.send_message(job.chat_id, text = "It's the start of a new week! Let's share something with everyone else: \n\n*" + msg + "*", parse_mode='Markdown')
+    await context.bot.send_message(job.chat_id, 
+                                   text = "knock knock! it's Frank here:\") I hope everyone has been having a good week, I just thought of a question this morning when I woke up and thought you might like it💭 \n\n*" 
+                                   + msg + "*", parse_mode='Markdown')
 
 async def send_poll(context: ContextTypes.DEFAULT_TYPE):
     job = context.job
     difficulty = job.data
     msg = random.choice(pollL1)
+    await context.bot.send_message(chat_id=job.chat_id, text = "hello again it's Frank!🐹 I just woke up from a nap,,, Wednesdays always make me sleepy🥱 Anyways...here's a fun question to start your day🥳🥳")
     await context.bot.send_poll(chat_id=job.chat_id, 
         question=msg[0], 
         options=msg[1],
