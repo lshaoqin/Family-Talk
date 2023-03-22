@@ -8,3 +8,16 @@ card_ids = ["AgACAgUAAxkBAAEdyRdj_hGIxB5DZFmDN4MqjLKKQnlgMgACibsxG5llwFf35lCd4sv
 "AgACAgUAAxkBAAEdyR5j_hGIqxhUh66yT4dAvcT1F6EDswAClbsxG5llwFd9V0VTnMmVwAEAAwIAA3gAAy4E",
 "AgACAgUAAxkBAAEdyR9j_hGIKL_45hcT-fsAAaP1qhnXyOMAArSyMRvF8cFXc17vvZPqCA0BAAMCAAN4AAMuBA",
 "AgACAgUAAxkBAAEdySBj_hGIhILzC9fbn_7jc896zediyAACPrQxG1g3uFfoE37xyoajFQEAAwIAA3gAAy4E",]
+
+card_links = [
+    "https://imgur.com/RMcOm0H",
+    "https://imgur.com/HPuOMZq",
+    "https://imgur.com/XYHBF2s",
+    "https://imgur.com/ze1Kv0L",
+    "https://imgur.com/WF376ei",
+    "https://imgur.com/09Skkib",
+    "https://imgur.com/ezvPAWP",
+    "https://imgur.com/U8tb8aR",
+    "https://imgur.com/es8tqCZ",
+    "https://imgur.com/kZlUKOk",
+]

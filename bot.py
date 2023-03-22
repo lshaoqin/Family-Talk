@@ -6,7 +6,7 @@ import datetime
 from prompts import *
 from db import push, get_schedules, delete
 import os
-from cards import card_ids
+from cards import card_links
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -75,7 +75,7 @@ async def send_poll(context: ContextTypes.DEFAULT_TYPE):
 
 async def send_card(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id #get current chat's id
-    card = random.choice(card_ids)
+    card = random.choice(card_links)
     await context.bot.send_photo(chat_id=chat_id, photo=card,
     caption="Credits: Check out [TableTalk by Vessels](https://tabletalkbyvessels.com/)!", parse_mode='Markdown')
 
